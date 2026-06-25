@@ -1,4 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { getCurrentUser } from 'aws-amplify/auth'
+import { useNavigate } from 'react-router-dom'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
@@ -6,6 +8,21 @@ import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
+  const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    getCurrentUser()
+      .then(user => {
+        setUser(user)
+        setLoading(false)
+      })
+      .catch(() => navigate('/login'))
+      .finally(() => setLoading(false))
+  }, [navigate])
+
+  if (!user || loading) return null
 
   return (
     <>
