@@ -1,9 +1,11 @@
-type WorkflowRunDetails = {
+import { ScanResult } from "./ScanResult"
+
+export type WorkflowRunDetails = {
     id: string
     repo: string
     branch: string
     commit: string
-    timestamp: string
+    timestamp: Date
     createdAt: string
     scans: ScanResult[]
 }

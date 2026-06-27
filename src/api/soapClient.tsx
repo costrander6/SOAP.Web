@@ -1,4 +1,6 @@
 import { fetchAuthSession } from "aws-amplify/auth"
+import { MultipleRepoRuns } from "../models/MultipleRepoRuns";
+import { WorkflowRunDetails } from "../models/WorkflowRunDetails";
 
 const URL = import.meta.env.VITE_SOAP_URL;
 
@@ -18,7 +20,15 @@ export async function GetAllRepoMainResults() {
   });
 
   if (!response.ok) throw new Error(`API error: ${response.status}`);
+
+  const data = await response.json();
   
 
-  return response.json();
+  return {
+    ...data,
+    workflowRuns: data.workflowRuns.map((run: WorkflowRunDetails) => ({
+      ...run,
+      timestamp: new Date(run.timestamp)
+    }))
+  }
 }

@@ -1,4 +1,4 @@
-type Finding = {
+export type Finding = {
     title: string
     description: string
     file: string
