@@ -5,11 +5,13 @@ import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import './App.css'
+import { GetAllRepoMainResults } from './api/soapClient'
 
 function App() {
   const [count, setCount] = useState(0)
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [findings, setFindings] = useState(null)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -17,12 +19,20 @@ function App() {
       .then(user => {
         setUser(user)
         setLoading(false)
+        return GetAllRepoMainResults()
       })
-      .catch(() => navigate('/login'))
+      .then(setFindings)
+      .catch(err => {
+        if (err.name === 'UserUnAuthenticatedException') {
+          navigate('/login')
+        } else {
+          console.error(err)
+        }
+      })
       .finally(() => setLoading(false))
   }, [navigate])
 
-  if (!user || loading) return null
+  if (!user || loading) return null;
 
   return (
     <>
@@ -37,6 +47,9 @@ function App() {
           <p>
             Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
           </p>
+        </div>
+        <div>
+          {findings}
         </div>
         <button
           type="button"

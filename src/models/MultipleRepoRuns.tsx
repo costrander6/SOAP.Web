@@ -1,0 +1,3 @@
+type MultipleRepoRuns = {
+    workflowRuns: WorkflowRunDetails[]
+}
