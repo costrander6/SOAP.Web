@@ -3,17 +3,16 @@ import { useNavigate } from 'react-router-dom'
 import { Hub } from 'aws-amplify/utils'
 
 export default function Callback() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = Hub.listen('auth', ({ payload }) => {
-      console.log('Auth event:', payload.event)
       if (payload.event === 'signedIn') {
-        navigate('/')
+        navigate('/');
       }
-    })
-    return unsubscribe
-  }, [navigate])
+    });
+    return unsubscribe;
+  }, [navigate]);
 
-  return null
+  return null;
 }

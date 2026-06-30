@@ -3,8 +3,8 @@ import { useEffect } from 'react'
 
 export default function Login() {
   useEffect(() => {
-    signInWithRedirect()
-  }, [])
+    signInWithRedirect();
+  }, []);
 
-  return null
+  return null;
 }
