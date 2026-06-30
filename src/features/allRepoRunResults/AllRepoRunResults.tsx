@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom"
 import { Finding } from "../../models/Finding"
 import { MultipleRepoRuns } from "../../models/MultipleRepoRuns"
 
@@ -33,14 +34,15 @@ const badgeStyle: Record<string, React.CSSProperties> = {
   MEDIUM:   { background: '#E6F1FB', color: '#185FA5' },
   LOW:      { background: '#EAF3DE', color: '#3B6D11' },
   UNCATEGORIZED: { background: 'var(--surface-1)', color: 'var(--text-secondary)', border: '0.5px solid var(--border)' },
-}
+};
 
 const pillBase: React.CSSProperties = {
   display: 'inline-flex', alignItems: 'center', gap: '4px',
   fontSize: '12px', fontWeight: 500, padding: '2px 8px', borderRadius: '20px',
-}
+};
 
 export default function AllRepoRunResults({ data }: IProps) {
+    const navigate = useNavigate();
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '1rem' }}>
             {data.workflowRuns.map(run => {
@@ -51,7 +53,7 @@ export default function AllRepoRunResults({ data }: IProps) {
             return (
                 <div
                 key={run.id}
-                onClick={() => console.log(`clicked ${run.repo}`)}
+                onClick={() => navigate(`/repo/${encodeURIComponent(run.repo)}`)}
                 style={{ background: 'var(--surface-2)', border: '0.5px solid var(--border)', borderRadius: '12px', padding: '1rem 1.5rem', cursor: 'pointer', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}
                 >
                 <div>
@@ -70,5 +72,5 @@ export default function AllRepoRunResults({ data }: IProps) {
             )
             })}
         </div>
-    )
+    );
 }

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { AuthUser, getCurrentUser } from 'aws-amplify/auth'
 import { useNavigate } from 'react-router-dom'
-import { GetAllRepoMainResults } from './api/soapClient'
+import { getAllRepoMainResults } from './api/soapClient'
 import { MultipleRepoRuns } from "./models/MultipleRepoRuns";
 import AllRepoRunResults from './features/allRepoRunResults/AllRepoRunResults';
 
@@ -14,9 +14,9 @@ function App() {
   useEffect(() => {
     getCurrentUser()
       .then(user => {
-        setUser(user)
-        setLoading(false)
-        return GetAllRepoMainResults()
+        setUser(user);
+        setLoading(false);
+        return getAllRepoMainResults();
       })
       .then(setFindings)
       .catch(err => {
@@ -26,8 +26,8 @@ function App() {
           console.error(err)
         }
       })
-      .finally(() => setLoading(false))
-  }, [navigate])
+      .finally(() => setLoading(false));
+  }, [navigate]);
 
   if (!user || loading || !findings) return null;
 
