@@ -50,3 +50,17 @@ export async function getScanForRepo(repo: string, branch: string | null) {
 
   return response.json() as Promise<WorkflowRunDetails>;
 }
+
+export async function getBranchesForRepo(repo: string) {
+  const authToken = await GetToken();
+  const response = await fetch(`${BASE_URL}/workflow-run/repo/${repo}/branches`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${authToken}`
+    }
+  });
+
+  if (!response.ok) throw new Error(`API error: ${response.status}`);
+
+  return response.json()
+}

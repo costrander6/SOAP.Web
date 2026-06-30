@@ -1,12 +1,25 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { getScanForRepo } from "../api/soapClient";
+import { getBranchesForRepo, getScanForRepo } from "../api/soapClient";
 import { useEffect, useState } from "react";
 import { WorkflowRunDetails } from "../models/WorkflowRunDetails";
 
 export default function RepoResults() {
     const [repoScan, setRepoScan] = useState<WorkflowRunDetails | null>(null);
-    const navigate = useNavigate();
+    const [branches, setBranches] = useState<string[]>([])
+    const [selectedBranch, setSelectedBranch] = useState<string | null>(null)
     const { repo } = useParams<{ repo: string }>();
+
+    useEffect(() => {
+        if (!repo) return;
+        getBranchesForRepo(repo).then(data => {
+            setBranches(data.branches);
+        })
+    }, [repo])
+
+    useEffect(() => {
+        if (!repo) return;
+        getScanForRepo(repo, selectedBranch).then(setRepoScan);
+    }, [repo, selectedBranch])
 
     if (!repo) {
         return (
@@ -16,15 +29,22 @@ export default function RepoResults() {
         );
     }
 
-    useEffect(() => {
-        getScanForRepo(repo, null).then(setRepoScan);
-    }, [navigate]);
-
     if (!repoScan) return null;
 
     return (
         <div>
             <h1>{repo}</h1>
+            <p style={{ fontSize: '12px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+            {repoScan.commit}
+            </p>
+            <select
+            value={selectedBranch ?? 'main'}
+            onChange={e => setSelectedBranch(e.target.value)}
+            >
+                {branches.map(branch => (
+                    <option key={branch} value={branch}>{branch}</option>
+                ))}
+            </select>
             {repoScan.scans.length === 0 && <p>No scans found.</p>}
             {repoScan.scans.map(scan => (
             <div key={scan.workflowRunId + scan.scanner}>
