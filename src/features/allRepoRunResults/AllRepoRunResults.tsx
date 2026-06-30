@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom"
 import { Finding } from "../../models/Finding"
 import { MultipleRepoRuns } from "../../models/MultipleRepoRuns"
+import { badgeStyle, pillBase } from "../constants/styles"
 
 interface IProps {
   data: MultipleRepoRuns
@@ -27,19 +28,6 @@ function getFindingServerityCounts(findings: Finding[], findingCount: FindingCou
 
     return findingCount;
 }
-
-const badgeStyle: Record<string, React.CSSProperties> = {
-  CRITICAL: { background: '#FCEBEB', color: '#A32D2D' },
-  HIGH:     { background: '#FAEEDA', color: '#854F0B' },
-  MEDIUM:   { background: '#E6F1FB', color: '#185FA5' },
-  LOW:      { background: '#EAF3DE', color: '#3B6D11' },
-  UNCATEGORIZED: { background: 'var(--surface-1)', color: 'var(--text-secondary)', border: '0.5px solid var(--border)' },
-};
-
-const pillBase: React.CSSProperties = {
-  display: 'inline-flex', alignItems: 'center', gap: '4px',
-  fontSize: '12px', fontWeight: 500, padding: '2px 8px', borderRadius: '20px',
-};
 
 export default function AllRepoRunResults({ data }: IProps) {
     const navigate = useNavigate();
